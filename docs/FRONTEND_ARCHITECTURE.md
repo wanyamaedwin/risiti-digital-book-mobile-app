@@ -2,7 +2,7 @@
 
 ## Scope and rendering
 
-Step 3 extends the frontend foundation with demo account forms and guided setup. There is no real authentication, authorization enforcement, backend integration, server persistence, receipt issuance, payment processing, scanning, PDF generation, or service worker. A versioned tab-scoped setup draft stores only non-sensitive fictional configuration.
+Step 4 extends the frontend foundation with deterministic business and personal dashboards, preserving demo account forms and guided setup. There is no real authentication, authorization enforcement, backend integration, server persistence, receipt issuance, payment processing, scanning, PDF generation, or service worker. A versioned tab-scoped setup draft stores only non-sensitive fictional configuration.
 
 The root layout owns Geist, global CSS, viewport, and basic metadata. `app/(public)/layout.tsx` uses the original public AppShell, preserving the welcome page outside the workspace shell. `app/w/[workspaceId]/layout.tsx` resolves a fictional workspace and composes the new workspace AppShell. Both share the root layout, so the original manifest and icons remain global.
 
@@ -10,16 +10,16 @@ Layouts and route pages are Server Components by default. Pathname-aware navigat
 
 ## Routes
 
-| Route under `/w/[workspaceId]`                                           | Implementation                                                          |
-| ------------------------------------------------------------------------ | ----------------------------------------------------------------------- |
-| `/`                                                                      | Redirect to workspace Home                                              |
-| `/home`                                                                  | Demo introduction, workspace details, planned entry points, empty state |
-| `/more`                                                                  | Role-aware navigation cards grouped by section                          |
-| `/design-system`                                                         | Local-only component and pattern preview                                |
-| `/receipts`, `/receipt-books`, `/expenses`, `/payments`                  | FeaturePlaceholder                                                      |
-| `/customers`, `/catalog`, `/reports`, `/staff`, `/branches`, `/settings` | FeaturePlaceholder                                                      |
-| `/receipts/new`                                                          | Explicit future receipt-creation placeholder                            |
-| `/receipts/history`                                                      | Future personally scoped cashier-history placeholder                    |
+| Route under `/w/[workspaceId]`                                           | Implementation                                                                      |
+| ------------------------------------------------------------------------ | ----------------------------------------------------------------------------------- |
+| `/`                                                                      | Redirect to workspace Home                                                          |
+| `/home`                                                                  | Business/personal dashboard with derived metrics, filters, records and empty states |
+| `/more`                                                                  | Role-aware navigation cards grouped by section                                      |
+| `/design-system`                                                         | Local-only component and pattern preview                                            |
+| `/receipts`, `/receipt-books`, `/expenses`, `/payments`                  | FeaturePlaceholder                                                                  |
+| `/customers`, `/catalog`, `/reports`, `/staff`, `/branches`, `/settings` | FeaturePlaceholder                                                                  |
+| `/receipts/new`                                                          | Explicit future receipt-creation placeholder                                        |
+| `/receipts/history`                                                      | Future personally scoped cashier-history placeholder                                |
 
 Known feature paths are configured in `src/config/features.ts` and resolved by `[...feature]/page.tsx`. Unknown feature paths call `notFound`; the catch-all does not fabricate generic working pages. Specific Home, More, and interface-preview routes take precedence. Route files only resolve params, metadata, and page composition.
 
@@ -37,9 +37,9 @@ Cashier navigation contains exactly Home, New Receipt, and My History. It does n
 
 ## Mock data and workspace switching
 
-`data/demo.ts` contains a fictional user with an `example.com` email, Kampala Traders (`demo`, Main Branch, Business Owner, UGX), and Wakiso Supplies (`sample`, Wakiso Branch, Business Owner, UGX). Both are marked demo. The switcher links to each workspace's Home; identity comes from route-resolved fixture props. These original fixtures do not use cookies, localStorage, a remote service, or persistence. The separate setup adapter described below overlays tab-scoped configuration only for `/w/setup`.
+`data/demo.ts` contains a fictional user with an `example.com` email, Kampala Traders (`demo`, Main Branch, Business Owner, UGX), and Wakiso Supplies (`sample`, Wakiso Branch, Business Owner, UGX). The Personal Book (`personal`, Individual) adds a distinct populated spending experience; Wakiso Supplies is an intentional empty fixture. All are marked demo. The switcher links to each workspace's Home; identity comes from route-resolved fixture props. These original fixtures do not use cookies, localStorage, a remote service, or persistence. The separate setup adapter described below overlays tab-scoped configuration only for `/w/setup`.
 
-The Home page contains no fake sales totals or transaction feed. Only the interface preview shows a labelled sample UGX amount to exercise CurrencyAmount and StatCard. Search and filters operate on sample component descriptions, not fake business records. Form validation, switches, reset confirmation, and result messages affect only local React state. Values reset on leaving/reloading the page.
+Home now uses scoped financial fixtures and shared pure selectors; every financial amount is labelled as fictional demo data. Newly configured workspaces receive no seeded records. The interface preview retains its separate sample amount to exercise CurrencyAmount and StatCard. Search and filters operate on sample component descriptions, not fake business records. Form validation, switches, reset confirmation, and result messages affect only local React state. Values reset on leaving/reloading the page.
 
 ## Reusable UI boundaries
 
@@ -65,7 +65,7 @@ The `(entry)` route group contains `/sign-in`, `/create-account`, `/forgot-passw
 
 `features/onboarding/` owns the shared conditional wizard, details form, choices, template previews, review, and a small `useSyncExternalStore` draft store. The strict versioned sessionStorage envelope keeps the fictional workspace name, choices, step, and completion flag. Optional contacts and local logo object URLs remain in wizard memory. No global state dependency is added.
 
-`/w/setup` is an additional known demo destination. Its client adapter supplies validated completed draft identity to the existing AppShell and reuses the Home, More, and interface-preview compositions. The existing fixture routes keep their Server Component shell composition. Recommended shortcuts are a small addition to Home, based on primary use, and link only to existing feature placeholders. A stable route and one saved object avoid duplicate workspaces on refresh or repeated completion.
+`/w/setup` is an additional known demo destination. Its client adapter supplies validated completed draft identity to the existing AppShell and reuses the Home, More, and interface-preview compositions. The existing fixture routes keep their Server Component shell composition. Recommended shortcuts remain based on primary use and link only to existing feature placeholders. The same typed preference now changes dashboard emphasis while leaving other permitted actions accessible. A stable route and one saved object avoid duplicate workspaces on refresh or repeated completion.
 
 Typed template fixtures distinguish reserved financial system fields from configurable display fields and support all five requested field types. They provide a future designer starting point without implementing editing, numbering, issuance, calculations, or persistence. See [Onboarding flow](ONBOARDING_FLOW.md) for the complete routes, validation, transition, storage, privacy, and integration contracts.
 
@@ -79,6 +79,16 @@ This does not replace manual accessibility review, physical Android testing, or 
 
 ## Future integration boundaries
 
-Step 4 and later stages require a separately agreed scope. Future work may replace fixture resolution and account previews with authenticated workspace membership, introduce scoped data repositories and permission checks, and connect real feature pages. Keep navigation URLs workspace-scoped, business state outside generic UI primitives, amounts validated before persistence, and errors distinguishable from empty results. Do not add these services during Step 3.
+Stages after Step 4 require a separately agreed scope. Future work may replace fixture resolution and account previews with authenticated workspace membership, introduce scoped data repositories and permission checks, and connect real feature pages. Keep navigation URLs workspace-scoped, business state outside generic UI primitives, amounts validated before persistence, and errors distinguishable from empty results. Do not add these services during Step 4.
 
 The manifest remains a PWA metadata foundation. Offline caches, service-worker update/lifecycle handling, real installation flows, EFRIS, and subscriptions require separate implementation and validation. No financial operation is currently possible.
+
+## Dashboard feature boundary
+
+`features/dashboard/types/dashboard.ts` supplies receipt, payment, bill, expense, activity, metric, filter and preference contracts. `data/fixtures.ts` provides deterministic normalized collections and an explicit empty dataset. The Server Component Home route calls `dataForWorkspace` before passing serializable records to the dashboard client boundary. Restricted future roles receive empty data. Setup Home passes configuration only and defaults to an empty dataset.
+
+`lib/calculations.ts` owns settlement, as-of balances, filtered record views, linked activity descriptions, categories and chart series. `lib/dates.ts` owns fixed demo date and Kampala grouping. `hooks/use-dashboard.ts` keeps harmless display filters in workspace-keyed React state and memoises derived summaries/series. Next.js Activity can preserve display filters during navigation; no credential/draft cleanup rules are changed. There is no financial persistence or storage key.
+
+The existing `WorkspaceHomePage` remains the route composition entry point. BusinessDashboard and IndividualDashboard compose shared sections, financial cards, metrics, list items, quick actions, labelled filters, spending rows and a CSS chart with an expandable data table. No chart dependency, API, second shell or transaction details route is introduced. Receipt rows are read-only summaries; View all links to the existing planned receipt page. Scan and export also link to the existing planned expense page.
+
+All six roles have typed view configurations; Manager, Cashier, Accountant and Platform Administrator use conservative restricted entry views until their dashboards are separately scoped. These presentation choices do not enforce authorization. Detailed financial rules, expected fixture totals and backend replacement seams are in [Dashboard specification](DASHBOARD_SPECIFICATION.md).

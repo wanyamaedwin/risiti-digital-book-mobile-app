@@ -1,6 +1,6 @@
 # Risiti Digital Book
 
-A frontend-only foundation for Risiti, with the original welcome page, a responsive demo workspace shell, a reusable design system, and demo account entry and guided Quick Setup. Step 3 extends the existing project directly in the repository root.
+A frontend-only foundation for Risiti, with the original welcome page, a responsive demo workspace shell, a reusable design system, demo account entry, guided Quick Setup, and business/personal demonstration dashboards. Step 4 extends the existing project directly in the repository root.
 
 Risiti is intended as a customisable digital receipt book PWA for Ugandan businesses, institutions, and individuals. This initial version implements only the frontend foundation described below.
 
@@ -55,6 +55,7 @@ src/components/navigation/ Pathname-aware navigation and breadcrumbs
 src/components/shared/    Buttons, cards, fields, type, amounts, badges, avatars
 src/components/feedback/  Placeholders, empty/loading states, confirmation dialog
 src/features/workspaces/  Workspace switcher, home, More, interface preview
+src/features/dashboard/   Dashboard components, scoped fixtures, selectors, types, filters
 src/features/account/     Demo-only account forms and branded entry layout
 src/features/onboarding/  Wizard, conditional details, templates, tab draft store
 src/config/               Typed navigation, role presentation, features, icons
@@ -96,7 +97,7 @@ Review generated changes and retain the Risiti tokens and mobile touch targets.
 
 This is a manifest foundation, not a complete offline PWA: there is no service worker, offline cache, push notification support, or custom install prompt. Production PWA capabilities require HTTPS (localhost is allowed for local testing).
 
-The welcome page, workspace UI foundation, account entry previews, and guided Quick Setup are implemented. Business feature destinations are explicitly labelled planned placeholders. Real authentication, functional dashboards, receipt issuance, designers, backend services, Supabase, payments, and AI features remain out of scope.
+The welcome page, workspace UI foundation, account entry previews, and guided Quick Setup are implemented. Business feature destinations are explicitly labelled planned placeholders. Business and personal dashboards now derive figures from fictional records. Real authentication, receipt issuance, designers, backend services, Supabase, payments, and AI features remain out of scope.
 
 ## Step 3 account entry and Quick Setup
 
@@ -108,9 +109,22 @@ Only the fictional workspace name and non-sensitive setup choices are retained i
 
 Use made-up details. No account, online workspace, authentication session, or receipt is created. See [Onboarding flow](docs/ONBOARDING_FLOW.md) for exact routes, validation, template definitions, storage boundaries, demo behavior, and future integration points.
 
-## Step 2 workspace
+## Step 4 dashboards
 
-- `/w/demo/home`: workspace introduction and planned-feature entry points.
+Business Home includes net money received, issued-document counts, outstanding bill balances, confirmed payment counts, recorded expenses, recent receipts/activity, and lightweight chart data. Personal Home separates outgoing expense receipts from receipts issued for money collected, with spending totals, categories and personal shortcuts. Use the existing workspace menu to switch between the populated business, populated personal, and empty sample experiences.
+
+Demo records use **5 November 2026** as an explicit fixed reporting date in **Africa/Kampala**. Today means the selected date; week starts Monday and month starts on day one, ending on that selected date. The labelled period, date and business branch controls recalculate visible figures, records and chart data. Outstanding amounts are as of the selected date, across all valid bills rather than just bills created in that period. Nothing is saved or sent by these filters.
+
+Setup choices control emphasis for Issue Receipts, Record Expenses or Both; other permitted tools remain accessible. Completed `/w/setup` configurations always get empty data, never seeded business/personal transactions. All create, scan, export, payment and report actions lead to explicitly planned pages; no backend operation happens. Existing notifications remain a demo dialog. Other role dashboards use conservative future-view configurations and never inherit owner financial visibility; frontend presentation is not secure authorization.
+
+See [Dashboard specification](docs/DASHBOARD_SPECIFICATION.md) for models, rules, demo totals, date boundaries, empty states and integration points. No runtime dependencies were added for dashboards; charts use CSS and accessible tables.
+
+## Workspace routes
+
+- `/w/demo/home`: populated Business Owner dashboard for Kampala Traders.
+- `/w/personal/home`: distinct personal spending and issued-receipt dashboard.
+- `/w/sample/home`: empty Wakiso Supplies business dashboard.
+- `/w/setup/home`: honest empty business/personal dashboard using completed setup preferences.
 - `/w/demo/receipts`, `/w/demo/receipt-books`, `/w/demo/expenses`, `/w/demo/payments`, `/w/demo/customers`, `/w/demo/catalog`, `/w/demo/reports`, `/w/demo/staff`, `/w/demo/branches`, `/w/demo/settings`: planned-feature pages.
 - `/w/demo/receipts/new`: future receipt creation placeholder; no issuance or financial workflow.
 - `/w/demo/more`: complete workspace navigation on mobile.
@@ -145,18 +159,21 @@ $env:NODE_OPTIONS = "--use-system-ca"
 
 Keep certificate verification enabled.
 
-## Initial validation
+## Validation history
+
+Step 4 passed `npm install`, ESLint with zero warnings, strict TypeScript checks, production build (84 generated pages), and all **71 tests**: 41 preserved regressions plus 12 dashboard calculation/contract tests and 18 dashboard browser checks. Both populated dashboards were checked at 320, 360, 375, 390, 428, 768, 1024 and 1440px without horizontal overflow or page runtime errors. Browser checks verify filters and chart values, branch/date changes, workspace switching, all quick-action destinations, empty sample/setup views and all six setup preference combinations. Visual review covered both dashboards on mobile and desktop; the primary amount was moved ahead of filters on phones. A workspace-switch assertion was corrected to account for Next.js Activity retaining hidden pages. Production dependency audit reports zero vulnerabilities; installation still reports 13 existing development-tooling advisories. No runtime dependencies were added. Physical Android performance/keyboard testing and a formal screen-reader audit remain unperformed.
 
 Step 3 passed installation, ESLint with zero warnings, strict TypeScript checks, production build, and all 41 regression tests (the original 18 plus 23 account/setup checks). Browser checks covered 320, 360, 375, 390, 428, 768, 1024, and 1440px, plus short keyboard-like viewports. They verify business/personal setup, optional/custom fields, local logo validation, template/scratch/deferral choices, review/edit, refresh restoration, Start Over, duplicate completion, storage unavailability, credential handling, and existing public/workspace navigation. A corrected optional-details panel and explicit Next.js Activity cleanup preserve step progress while clearing memory-only information after leaving a route. Production audit still reports zero vulnerabilities; the existing 13 development-tooling advisories remain. Physical Android/keyboard testing has not been performed.
 
 Step 2 passed installation, ESLint with zero warnings, strict TypeScript checks, production build, and all 18 browser/foundation regression tests. The suite covers all eight requested widths. Visual review caught and fixed semantic typography being dropped by class merging and a narrow navigation-label fit issue at 320px. Functional text/surface colour pairs were also checked against a 4.5:1 contrast target.
 
-Concurrent traced Chromium runs intermittently stalled in this Windows environment; the complete suite passed with one worker and tracing off, now the defaults. The system temporary drive was also nearly full, so browser temporary files were redirected to `.next/browser-tmp` for the successful validation run. If your temporary drive is short of space, use this in the current PowerShell session before running browser checks:
+Concurrent traced Chromium runs intermittently stalled in this Windows environment; the complete suite passed with one worker and tracing off, now the defaults. The system temporary drive was also nearly full, so browser temporary files were redirected to the repository drive for validation. Step 4 also redirected npm cache/logs after the system drive reported ENOSPC; this avoids deleting user files. If your temporary drive is short of space, use this in the current PowerShell session before running browser checks:
 
 ```powershell
 New-Item -ItemType Directory -Path .next/browser-tmp -Force | Out-Null
 $env:TEMP = (Resolve-Path .next/browser-tmp).Path
 $env:TMP = $env:TEMP
+$env:npm_config_cache = Join-Path $PWD ".next/npm-cache"
 npm run test:e2e
 ```
 

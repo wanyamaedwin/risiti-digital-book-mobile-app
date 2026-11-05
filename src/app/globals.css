@@ -400,6 +400,23 @@
   padding-top: env(safe-area-inset-top, 0px);
 }
 
+.dashboard-progress {
+  appearance: none;
+  background: var(--muted);
+  color: var(--primary);
+}
+.dashboard-progress::-webkit-progress-bar {
+  background: var(--muted);
+}
+.dashboard-progress::-webkit-progress-value {
+  background: var(--primary);
+  border-radius: 999px;
+}
+.dashboard-progress::-moz-progress-bar {
+  background: var(--primary);
+  border-radius: 999px;
+}
+
 /* Account entry and setup remain outside the workspace navigation. */
 .entry-shell {
   padding-bottom: calc(1.5rem + env(safe-area-inset-bottom, 0px));

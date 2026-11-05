@@ -175,5 +175,6 @@ export function configuredWorkspace(draft: OnboardingDraft): Workspace {
     role: draft.workspaceType === "personal" ? "individual" : "business_owner",
     isDemo: true,
     kind: draft.workspaceType ?? "business",
+    dashboardPreferences: { primaryUse: draft.primaryUse ?? "both" },
   };
 }

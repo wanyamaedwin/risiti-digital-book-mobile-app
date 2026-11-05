@@ -15,7 +15,7 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 - Read the relevant installed Next.js guides before changes. Follow App Router conventions and current deprecation notices.
 - Keep TypeScript strict. Prefer explicit types, avoid `any`, and do not bypass build or lint errors.
 - Prefer Server Components. Add `"use client"` only where browser state or interactivity needs it.
-- Step 3 is frontend-only: existing design system/shell, sample account entry, guided setup, and planned feature placeholders. Do not add real authentication, functional dashboards, receipt issuance, backend services, Supabase, payments, AI, or business management without a new user request.
+- Step 4 is frontend-only: preserve the design system/shell, sample account entry, guided setup, fixture-based business/personal dashboards and planned feature placeholders. Do not add real authentication, receipt issuance, backend services, Supabase, payments, AI, or business management without a new user request.
 - Use Tailwind CSS v4's CSS-first tokens in `src/app/globals.css`; there is no legacy Tailwind configuration file. Keep the PostCSS integration in `postcss.config.mjs`.
 - Preserve all five official Risiti colours. Use semantic tokens for components; pair lime with Deep Ink for readable text.
 - Use Geist for interface text and headings. Introduce Satoshi only when its font files and a suitable licence are supplied and verified.
@@ -29,7 +29,7 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 - Update README.md when commands, prerequisites, structure, or scope change. Never delete or overwrite Git metadata.
 - Keep workspace routes under `/w/[workspaceId]`. Await route params and validate the workspace against fixtures until a real workspace data source is explicitly requested.
 - Keep navigation and role lists in `src/config/navigation.ts`. Role visibility is presentation, never authorization. Cashier navigation must remain limited to Home, New Receipt, and My History; future record access must be checked by the backend within the workspace and user scope.
-- Keep demo fixtures in `src/data/demo.ts`. Never hard-code mock workspace identity in layout components. All financial examples must be labelled demo and use the shared whole-shilling UGX formatter.
+- Keep identity fixtures in `src/data/demo.ts` and financial fixtures in `src/features/dashboard/data/fixtures.ts`. Never hard-code mock workspace identity in layout components. All financial examples must be labelled demo and use the shared whole-shilling UGX formatter.
 - Reuse shadcn/ui primitives through small semantic wrappers. FormField supplies labels, descriptions, and error associations to the App form controls. Do not add financial persistence to the interface preview.
 - Import `cn` from `@/lib/utils`, including in generated primitives. The helper registers semantic typography sizes so text-colour utilities do not remove them.
 - The mobile/desktop breakpoint is 1024px. Main content and sticky form actions share `--mobile-nav-clearance`; keep bottom safe-area spacing intact. Never show the bottom nav and desktop sidebar simultaneously.
@@ -45,3 +45,11 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 - `/w/setup` adapts this tab's completed draft into the existing shell. Keep fixture demos intact, preserve role-scoped presentation, and do not infer permissions or login from a completed draft.
 - Run the original 18 regression tests and the additional account/onboarding tests after a build. Test the documented eight viewport widths, short viewports, keyboard interactions, storage exclusions, restoration, reset, and both workspace journeys. See `docs/ONBOARDING_FLOW.md`.
 - Cache Components retains hidden pages with React Activity. Keep explicit layout-effect cleanup for account credentials and wizard contacts/logo; changing wizard steps must retain those optional details, while leaving the route must clear them. Read the installed `preserving-ui-state.md` guide before changing this behavior.
+
+- Dashboard code belongs in `src/features/dashboard/`: typed records, pure calculations, scoped data, hooks and small presentation components. Reuse the existing Home route, shell and shared UI primitives; do not introduce a chart library for these lightweight bar/category views.
+- Slice financial fixtures by workspace on the server before passing Client Component props. `/w/setup` and `/w/sample` have no seeded transactions. Never infer dashboard type or preference from a workspace name.
+- Money received is confirmed incoming less explicitly linked confirmed refunds. Pending/reversed payments do not count. Outstanding balances use valid bills less dated adjustments and net settled payments as of the reporting date, clamped at zero; do not calculate profit.
+- Issued-document counts exclude drafts and effective voids. A void alone does not reverse money. Refunds affect money separately, and valid refunded documents remain counted. Preserve audit events and distinct expense attachments versus issued receipts.
+- Demo reporting starts at 2026-11-05 in Africa/Kampala. Period/date/branch controls must change all relevant records and totals. Monday weeks and months end at the selected date; outstanding and drafts are as-of stocks. Label this fixed demo date, never imply live today figures.
+- Use typed six-role dashboard view configurations. Owner and Individual have dashboards; other roles have restricted future views. A cashier or Platform Administrator must not receive owner financial data. Frontend role checks never replace backend authorization.
+- Preserve all prior regression tests and run new dashboard calculation/browser tests as part of the full suite. Keep chart totals reconciled with summaries and provide labelled controls, explicit zero/empty states and an accessible chart data table. See `docs/DASHBOARD_SPECIFICATION.md`.

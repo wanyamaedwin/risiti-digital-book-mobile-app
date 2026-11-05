@@ -97,3 +97,11 @@ The interface preview exercises these patterns using component samples rather th
 `--mobile-nav-clearance` includes bottom safe-area space and is shared by content padding and sticky actions. The floating nav uses the same safe-area inset; viewport metadata opts into safe-area handling. Active navigation is pathname-based and exposes `aria-current="page"`. Create is prominent in purple, or lime when selected. Secondary workspace routes select More on mobile.
 
 Use short CSS colour/press/hover transitions. Existing reduced-motion rules disable animations and smooth scrolling when requested. No animation library is added. Physical devices and mobile browser chrome should be checked before a real PWA release; viewport emulation cannot certify hardware performance or every safe-area environment.
+
+## Step 4 dashboard composition
+
+Dashboard components in `src/features/dashboard/components/` reuse AppCard, StatCard, CurrencyAmount, SectionHeading, PageHeading, StatusBadge, EmptyState, Button and FormField/App controls. FinancialSummaryCard uses Deep Ink, white text and a lime icon; tabular financial amounts scale from 32px on small phones. Metric cards use a single column at 320px, two from 360px, and four at wide desktop. Bounded bento grids stack on phones and split at wide desktop, keeping the existing sidebar and floating navigation.
+
+DashboardSection provides named semantic regions. QuickActionGrid has large real links with a Planned feature caption. ReceiptListItem and ExpenseListItem are vertical lists, never wide mobile tables. Status badges use Paid, Partially Paid, Unpaid, Voided and Refunded text. Incoming personal receipts and saved expense attachments have separate sections and labels.
+
+FinancialOverviewCard draws small CSS bars around an explicit zero baseline, with net refunds below zero and a full accessible table in a native disclosure. There are no chart animations or chart-library downloads. SpendingCategoryRow uses labelled native progress elements, category amounts, counts and percentages; shape, text and values convey meaning independently of colour. Existing semantic primary/muted/destructive tokens style these views. Empty charts and zero workspaces have explicit text and first-action links. Period/date/branch controls have visible labels, descriptions and 48px native inputs.

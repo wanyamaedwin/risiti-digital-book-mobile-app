@@ -87,7 +87,7 @@ Category recommendations never restrict available designs. Blank includes only t
 
 `/w/setup` is a known demo route. A small client adapter resolves this tab's completed configuration and passes it into the existing AppShell. The shell and fixture-based demos are not replaced. The adapter supplies the chosen workspace name, initials, branch label, and a Business Owner or Individual demo role. The existing home, More, and interface-preview compositions are reused.
 
-Recommended Home shortcuts reflect receipt issuing, expense recording, or Both, with links to existing planned-feature pages. Other approved features stay available. Change setup choices returns to the saved setup. No live dashboard is added. Without a valid completed draft, `/w/setup` directs the user to Quick Setup.
+Recommended Home shortcuts reflect receipt issuing, expense recording, or Both, with links to existing planned-feature pages. Other approved features stay available. Change setup choices returns to the saved setup. Step 4 now uses these choices to show an empty business/personal dashboard; no seeded transactions are assigned to this configured workspace. Without a valid completed draft, `/w/setup` directs the user to Quick Setup.
 
 Navigation roles remain presentation only. No authentication or permission enforcement is implied. Optional logo/contact previews are intentionally not projected into the workspace or persisted. The setup workspace is offered in its own switcher without mutating the global fixture list or duplicating it.
 

@@ -16,6 +16,8 @@ export const availableWorkspaces: readonly Workspace[] = [
     currency: "UGX",
     role: "business_owner",
     isDemo: true,
+    kind: "business",
+    dashboardPreferences: { primaryUse: "both" },
   },
   {
     id: "sample",
@@ -25,6 +27,19 @@ export const availableWorkspaces: readonly Workspace[] = [
     currency: "UGX",
     role: "business_owner",
     isDemo: true,
+    kind: "business",
+    dashboardPreferences: { primaryUse: "receipts" },
+  },
+  {
+    id: "personal",
+    name: "My Personal Book",
+    initials: "PB",
+    branch: "Personal workspace",
+    currency: "UGX",
+    role: "individual",
+    isDemo: true,
+    kind: "personal",
+    dashboardPreferences: { primaryUse: "both" },
   },
 ];
 

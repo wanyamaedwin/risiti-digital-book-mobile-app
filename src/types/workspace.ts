@@ -1,3 +1,5 @@
+import type { WorkspaceDashboardPreferences } from "@/features/dashboard/types/dashboard";
+
 export const roleLabels = {
   business_owner: "Business Owner",
   manager: "Manager",
@@ -17,6 +19,7 @@ export type Workspace = {
   role: Role;
   isDemo: true;
   kind?: "business" | "personal";
+  dashboardPreferences?: WorkspaceDashboardPreferences;
 };
 export type DemoUser = {
   id: string;
