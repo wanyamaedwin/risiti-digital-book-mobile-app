@@ -7,6 +7,7 @@ import {
   Sparkles,
 } from "lucide-react";
 import { BookArtwork } from "@/components/book-artwork";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 
@@ -73,6 +74,13 @@ export default function Home() {
             <span className="size-1.5 rounded-full bg-primary" /> A new
             beginning. Thoughtfully built.
           </p>
+          <Link
+            href="/w/demo/home"
+            className="mt-3 inline-flex min-h-11 items-center gap-2 text-sm font-medium text-primary hover:underline"
+          >
+            Explore the demo workspace{" "}
+            <ArrowUpRight aria-hidden="true" className="size-4" />
+          </Link>
         </div>
         <BookArtwork />
       </section>

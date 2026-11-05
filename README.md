@@ -1,6 +1,6 @@
 # Risiti Digital Book
 
-A frontend-only starting point for Risiti, with a responsive welcome page and a reusable design foundation. Built directly in the repository root.
+A frontend-only foundation for Risiti, with the original welcome page, a responsive demo workspace shell, and a reusable design system. Step 2 extends Step 1 directly in the repository root.
 
 Risiti is intended as a customisable digital receipt book PWA for Ugandan businesses, institutions, and individuals. This initial version implements only the frontend foundation described below.
 
@@ -17,7 +17,7 @@ npm install
 npm run dev
 ```
 
-Open http://localhost:3000. Edit `src/app/page.tsx` to update the welcome page.
+Open http://localhost:3000 for the welcome page or http://localhost:3000/w/demo/home for the demo workspace. The welcome page is in `src/app/(public)/page.tsx`.
 
 No environment variables, accounts, API keys, database, or backend services are required.
 
@@ -45,14 +45,21 @@ The setup follows the [official Next.js installation guide](https://nextjs.org/d
 ## Project structure
 
 ```text
-src/app/                 App Router layout, welcome page, global CSS, metadata, manifest
-src/components/          Shared app shell, Risiti brand, decorative book artwork
-src/components/ui/       Editable shadcn/ui button and card primitives
-src/lib/utils.ts         Shared class-name utility
-public/icons/            Android, maskable, and Apple app icons
-components.json          shadcn/ui configuration for Tailwind v4 and @/* aliases
-postcss.config.mjs       Tailwind v4 PostCSS integration
-AGENTS.md                Project conventions for future coding work
+src/app/(public)/         Original welcome page and public layout
+src/app/w/[workspaceId]/  Shared workspace layout and small route files
+src/components/ui/        Editable shadcn/ui primitives
+src/components/layout/    Workspace shell, header, sidebar, and page patterns
+src/components/navigation/ Pathname-aware navigation and breadcrumbs
+src/components/shared/    Buttons, cards, fields, type, amounts, badges, avatars
+src/components/feedback/  Placeholders, empty/loading states, confirmation dialog
+src/features/workspaces/  Workspace switcher, home, More, interface preview
+src/config/               Typed navigation, role presentation, features, icons
+src/data/                 Fictional users and workspaces
+src/types/                Workspace-scoped roles and fixture types
+src/lib/                  Class-name helper and whole-shilling UGX formatter
+public/icons/             Android, maskable, and Apple app icons
+tests/                    Playwright browser and foundation regression checks
+docs/                     Design system and frontend architecture
 ```
 
 ## Design foundation
@@ -85,7 +92,34 @@ Review generated changes and retain the Risiti tokens and mobile touch targets.
 
 This is a manifest foundation, not a complete offline PWA: there is no service worker, offline cache, push notification support, or custom install prompt. Production PWA capabilities require HTTPS (localhost is allowed for local testing).
 
-Only the welcome page is implemented. Authentication, dashboards, receipts, designers, business management, backend services, Supabase, payments, and AI features are intentionally out of scope.
+The welcome page and workspace UI foundation are implemented. Business feature destinations are explicitly labelled planned placeholders. The interface preview uses only local component state. Authentication, functional dashboards, receipt issuance, designers, backend services, Supabase, payments, and AI features remain out of scope.
+
+## Step 2 workspace
+
+- `/w/demo/home`: workspace introduction and planned-feature entry points.
+- `/w/demo/receipts`, `/w/demo/receipt-books`, `/w/demo/expenses`, `/w/demo/payments`, `/w/demo/customers`, `/w/demo/catalog`, `/w/demo/reports`, `/w/demo/staff`, `/w/demo/branches`, `/w/demo/settings`: planned-feature pages.
+- `/w/demo/receipts/new`: future receipt creation placeholder; no issuance or financial workflow.
+- `/w/demo/more`: complete workspace navigation on mobile.
+- `/w/demo/design-system`: interactive component and page-pattern preview. No values are persisted.
+- `/w/demo/receipts/history`: scoped-history placeholder for the future Cashier navigation foundation.
+
+`/w/demo` redirects to Home. A second fictional workspace at `/w/sample/home` demonstrates switching without hard-coded layout identity. Unknown workspaces and unknown features show the Next.js not-found page.
+
+Below 1024px, navigation floats above the bottom safe area and offers Home, Create, Receipts, Expenses, and More. At 1024px and wider, a grouped Deep Ink sidebar replaces it. Active states follow the pathname. Main content and sticky form actions reserve the same safe-area clearance as the navigation.
+
+The active demo role is Business Owner. Other typed roles provide navigation presentation only. Cashier navigation is limited to Home, New Receipt, and My History. No role is authenticated or enforced; backend workspace and record-level permission checks are required before real data is introduced.
+
+See [Design system](docs/DESIGN_SYSTEM.md) for tokens and components and [Frontend architecture](docs/FRONTEND_ARCHITECTURE.md) for routes, roles, fixtures, and future integration boundaries.
+
+## Browser regression checks
+
+```bash
+npx playwright install chromium --no-shell
+npm run build
+npm run test:e2e
+```
+
+Playwright is a development dependency. The suite starts a production server on port 3210 and uses full Chromium (no separate headless-shell download). Close any process already occupying that port first. Tests run with one browser worker and screenshots on failure to limit resource usage; add `-- --trace=on` to the test command when detailed tracing is needed. It checks all eight requested widths, navigation and planned routes, workspace switching, keyboard focus and dialogs, local form validation, filters, reduced motion, and the public welcome page. Regression checks also cover Cashier navigation and UGX formatting. Screenshots and failure artifacts are written under the Git-ignored `.next/` directory. Safe-area values are included in CSS; browser emulation does not replace tests on physical Android devices.
 
 ## Windows certificate troubleshooting
 
@@ -98,6 +132,17 @@ $env:NODE_OPTIONS = "--use-system-ca"
 Keep certificate verification enabled.
 
 ## Initial validation
+
+Step 2 passed installation, ESLint with zero warnings, strict TypeScript checks, production build, and all 18 browser/foundation regression tests. The suite covers all eight requested widths. Visual review caught and fixed semantic typography being dropped by class merging and a narrow navigation-label fit issue at 320px. Functional text/surface colour pairs were also checked against a 4.5:1 contrast target.
+
+Concurrent traced Chromium runs intermittently stalled in this Windows environment; the complete suite passed with one worker and tracing off, now the defaults. The system temporary drive was also nearly full, so browser temporary files were redirected to `.next/browser-tmp` for the successful validation run. If your temporary drive is short of space, use this in the current PowerShell session before running browser checks:
+
+```powershell
+New-Item -ItemType Directory -Path .next/browser-tmp -Force | Out-Null
+$env:TEMP = (Resolve-Path .next/browser-tmp).Path
+$env:TMP = $env:TEMP
+npm run test:e2e
+```
 
 The initial setup passed `npm install`, ESLint with zero warnings, strict TypeScript checks, and a production build. Chromium checks covered 320, 360, 390, 768, and 1440px widths, working section links, keyboard skip navigation, reduced-motion styles, metadata, manifest, and icon responses. No horizontal overflow or browser errors were found. Real Android hardware testing has not been performed.
 

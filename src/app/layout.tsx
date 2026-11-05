@@ -1,6 +1,5 @@
 import type { Metadata, Viewport } from "next";
 import { Geist } from "next/font/google";
-import { AppShell } from "@/components/app-shell";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -25,6 +24,7 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
+  viewportFit: "cover",
   themeColor: "#1E1A34",
 };
 
@@ -35,9 +35,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={`${geistSans.variable} min-h-full`}>
-      <body className="min-h-dvh">
-        <AppShell>{children}</AppShell>
-      </body>
+      <body className="min-h-dvh">{children}</body>
     </html>
   );
 }

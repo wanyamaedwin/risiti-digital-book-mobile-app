@@ -15,7 +15,7 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 - Read the relevant installed Next.js guides before changes. Follow App Router conventions and current deprecation notices.
 - Keep TypeScript strict. Prefer explicit types, avoid `any`, and do not bypass build or lint errors.
 - Prefer Server Components. Add `"use client"` only where browser state or interactivity needs it.
-- This phase is frontend-only. Do not add authentication, dashboards, receipt tools, backend services, Supabase, payments, AI, or business management without a new user request.
+- Step 2 is frontend-only: design system, demo workspace shell, typed navigation, and explicitly planned feature placeholders. Do not add authentication, functional dashboards, receipt issuance, backend services, Supabase, payments, AI, or business management without a new user request.
 - Use Tailwind CSS v4's CSS-first tokens in `src/app/globals.css`; there is no legacy Tailwind configuration file. Keep the PostCSS integration in `postcss.config.mjs`.
 - Preserve all five official Risiti colours. Use semantic tokens for components; pair lime with Deep Ink for readable text.
 - Use Geist for interface text and headings. Introduce Satoshi only when its font files and a suitable licence are supplied and verified.
@@ -23,7 +23,17 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 - Use `page-container`, `text-display`, `text-heading`, `text-body`, and `eyebrow` for consistent layout and typography.
 - Design mobile first, checking 320px and 360px widths as well as desktop. Avoid horizontal scrolling, heavy animation, unnecessary client JavaScript, and large assets.
 - Provide semantic HTML, real link destinations, visible keyboard focus, accessible names, 44px touch targets for primary actions, and reduced-motion support.
-- Keep the shared header/footer in `src/components/app-shell.tsx`; keep the R. placeholder in the brand component and icon assets consistent.
+- Keep the public header/footer in `src/components/app-shell.tsx` and its route group in `src/app/(public)/`. The workspace AppShell is in `src/components/layout/app-shell.tsx`; do not wrap public pages in the workspace shell. Keep the R. placeholder and icon assets consistent.
 - `src/app/manifest.ts` provides metadata only. Do not describe the app as offline-capable until a service worker and its lifecycle have been implemented and verified.
 - Before delivery run `npm install`, `npm run lint`, `npm run typecheck`, and `npm run build`. Fix failures and report any external setup limitations accurately.
 - Update README.md when commands, prerequisites, structure, or scope change. Never delete or overwrite Git metadata.
+- Keep workspace routes under `/w/[workspaceId]`. Await route params and validate the workspace against fixtures until a real workspace data source is explicitly requested.
+- Keep navigation and role lists in `src/config/navigation.ts`. Role visibility is presentation, never authorization. Cashier navigation must remain limited to Home, New Receipt, and My History; future record access must be checked by the backend within the workspace and user scope.
+- Keep demo fixtures in `src/data/demo.ts`. Never hard-code mock workspace identity in layout components. All financial examples must be labelled demo and use the shared whole-shilling UGX formatter.
+- Reuse shadcn/ui primitives through small semantic wrappers. FormField supplies labels, descriptions, and error associations to the App form controls. Do not add financial persistence to the interface preview.
+- Import `cn` from `@/lib/utils`, including in generated primitives. The helper registers semantic typography sizes so text-colour utilities do not remove them.
+- The mobile/desktop breakpoint is 1024px. Main content and sticky form actions share `--mobile-nav-clearance`; keep bottom safe-area spacing intact. Never show the bottom nav and desktop sidebar simultaneously.
+- Use the workspace typography utilities documented in `docs/DESIGN_SYSTEM.md`; important text and metadata must be at least 12px. Preserve the existing public display scale.
+- Keep `usePathname` consumers inside Suspense boundaries for unknown dynamic params with Cache Components; generate known demo route params at build time.
+- For workspace or component changes, run `npm run test:e2e` after a production build. Test files live in `tests/`; browser installation instructions are in README.md. Inspect all eight documented viewport widths and preserve keyboard focus behavior.
+- Do not use `npm audit fix --force`, weaken certificate validation, change Git remotes, or push code unless the user explicitly authorizes those actions for the current task.
