@@ -1,0 +1,282 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+:root {
+  color-scheme: light;
+  --purple: #7249bc;
+  --lime: #bede18;
+  --ink: #1e1a34;
+  --soft-white: #eeeeed;
+  --white: #ffffff;
+  --background: var(--soft-white);
+  --foreground: var(--ink);
+  --card: var(--white);
+  --card-foreground: var(--ink);
+  --popover: var(--white);
+  --popover-foreground: var(--ink);
+  --primary: var(--purple);
+  --primary-foreground: var(--white);
+  --secondary: var(--ink);
+  --secondary-foreground: var(--white);
+  --muted: #e6e4e9;
+  --muted-foreground: #625e70;
+  --accent: var(--lime);
+  --accent-foreground: var(--ink);
+  --destructive: #b42318;
+  --border: #d8d5de;
+  --input: #b5afc2;
+  --ring: var(--purple);
+  --radius: 0.875rem;
+}
+
+@theme inline {
+  --font-sans: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+  --font-heading: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+  --color-purple: var(--purple);
+  --color-lime: var(--lime);
+  --color-ink: var(--ink);
+  --color-soft-white: var(--soft-white);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+  --animate-enter: enter 650ms ease-out both;
+  @keyframes enter {
+    from {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 1.5rem;
+  }
+  body {
+    @apply bg-background font-sans text-foreground antialiased;
+  }
+  a,
+  button {
+    -webkit-tap-highlight-color: transparent;
+  }
+  :focus-visible {
+    outline: 3px solid var(--purple);
+    outline-offset: 5px;
+  }
+  header :focus-visible {
+    outline-color: var(--lime);
+  }
+  ::selection {
+    background: var(--lime);
+    color: var(--ink);
+  }
+}
+
+@utility page-container {
+  width: min(100% - 2.5rem, 74rem);
+  margin-inline: auto;
+  @media (min-width: 640px) {
+    width: min(100% - 5rem, 74rem);
+  }
+}
+@utility text-display {
+  font-size: clamp(3rem, 6.2vw, 5.5rem);
+  font-weight: 650;
+  line-height: 1.04;
+  letter-spacing: -0.065em;
+  text-wrap: balance;
+}
+@utility text-heading {
+  font-size: clamp(2rem, 3.4vw, 3rem);
+  font-weight: 600;
+  line-height: 1.12;
+  letter-spacing: -0.045em;
+  text-wrap: balance;
+}
+@utility text-body {
+  font-size: 1.0625rem;
+  line-height: 1.8;
+  color: var(--muted-foreground);
+}
+@utility eyebrow {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.skip-link {
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  z-index: 50;
+  transform: translateY(-200%);
+  border-radius: 0.5rem;
+  background: var(--lime);
+  color: var(--ink);
+  padding: 0.75rem 1rem;
+  font-weight: 600;
+}
+.skip-link:focus {
+  transform: translateY(0);
+}
+.book-scene {
+  position: relative;
+  display: grid;
+  min-width: 0;
+  height: 470px;
+  place-items: center;
+  isolation: isolate;
+}
+.book-orbit {
+  position: absolute;
+  z-index: -1;
+  border: 1px solid #7249bc18;
+  border-radius: 50%;
+}
+.book-orbit-outer {
+  width: min(100%, 455px);
+  aspect-ratio: 1;
+}
+.book-orbit-inner {
+  width: min(78%, 350px);
+  aspect-ratio: 1;
+  background: #7249bc06;
+}
+.digital-book {
+  position: relative;
+  width: 255px;
+  height: 330px;
+  transform: rotate(-10deg);
+  border-radius: 7px 18px 18px 7px;
+  background: #d7d2e0;
+  box-shadow:
+    15px 24px 0 -12px #1e1a3410,
+    0 32px 40px -22px #1e1a3440;
+}
+.digital-book::after {
+  content: "";
+  position: absolute;
+  right: 5px;
+  bottom: -7px;
+  left: 7px;
+  height: 18px;
+  z-index: -1;
+  border: 1px solid #d0cbd6;
+  border-radius: 0 0 12px 5px;
+  background: repeating-linear-gradient(
+    to bottom,
+    #ffffff 0px,
+    #ffffff 2px,
+    #dedbe3 2px,
+    #dedbe3 3px
+  );
+}
+.book-cover {
+  position: absolute;
+  inset: 0 0 4px -4px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border-radius: inherit;
+  border-left: 10px solid #5e389f;
+  background: var(--purple);
+  color: white;
+  padding: 23px;
+  box-shadow: inset 2px 0 0 #ffffff18;
+}
+.book-monogram {
+  margin-left: -4px;
+  font-size: 140px;
+  font-weight: 650;
+  line-height: 1;
+  letter-spacing: -0.09em;
+}
+.book-caption {
+  position: absolute;
+  bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  background: white;
+  padding: 12px 18px;
+  color: var(--ink);
+  font-size: 11px;
+  font-weight: 500;
+  box-shadow: 0 6px 18px #1e1a3405;
+}
+@media (min-width: 1024px) {
+  .book-scene {
+    height: 530px;
+  }
+  .digital-book {
+    width: 290px;
+    height: 370px;
+  }
+  .book-cover {
+    padding: 27px;
+  }
+  .book-monogram {
+    font-size: 165px;
+  }
+  .book-caption {
+    bottom: 24px;
+    right: 8px;
+  }
+}
+@media (max-width: 359px) {
+  .book-scene {
+    height: 410px;
+  }
+  .digital-book {
+    width: 225px;
+    height: 300px;
+  }
+  .book-monogram {
+    font-size: 115px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
