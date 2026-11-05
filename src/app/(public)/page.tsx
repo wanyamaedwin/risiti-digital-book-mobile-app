@@ -59,16 +59,34 @@ export default function Home() {
             your everyday business. Our story is just beginning.
           </p>
           <div className="mt-9 flex flex-wrap gap-3">
-            <Button asChild size="lg">
-              <a href="#about">
-                Meet Risiti <ArrowUpRight aria-hidden="true" />
-              </a>
+            <Button
+              asChild
+              size="lg"
+              className="bg-lime text-ink hover:bg-lime/90"
+            >
+              <Link href="/onboarding">
+                Get Started <ArrowUpRight aria-hidden="true" />
+              </Link>
             </Button>
             <Button asChild variant="outline" size="lg">
               <a href="#spirit">
                 The Risiti spirit <ArrowDown aria-hidden="true" />
               </a>
             </Button>
+          </div>
+          <div className="mt-3 flex flex-wrap gap-x-5">
+            <a
+              href="#about"
+              className="inline-flex min-h-11 items-center text-sm font-medium text-primary hover:underline"
+            >
+              Meet Risiti
+            </a>
+            <Link
+              href="/sign-in"
+              className="inline-flex min-h-11 items-center text-sm font-medium text-primary hover:underline"
+            >
+              Sign in preview
+            </Link>
           </div>
           <p className="mt-7 flex items-center gap-2 text-xs text-muted-foreground">
             <span className="size-1.5 rounded-full bg-primary" /> A new

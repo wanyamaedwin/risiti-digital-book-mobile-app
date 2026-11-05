@@ -1,6 +1,6 @@
 # Risiti Digital Book
 
-A frontend-only foundation for Risiti, with the original welcome page, a responsive demo workspace shell, and a reusable design system. Step 2 extends Step 1 directly in the repository root.
+A frontend-only foundation for Risiti, with the original welcome page, a responsive demo workspace shell, a reusable design system, and demo account entry and guided Quick Setup. Step 3 extends the existing project directly in the repository root.
 
 Risiti is intended as a customisable digital receipt book PWA for Ugandan businesses, institutions, and individuals. This initial version implements only the frontend foundation described below.
 
@@ -39,6 +39,7 @@ npm start
 - Tailwind CSS v4 with its official PostCSS integration
 - shadcn/ui (Radix Nova preset), Radix primitives, and Lucide icons
 - ESLint with Next.js Core Web Vitals and TypeScript rules
+- Zod and React Hook Form with the Zod resolver for account/setup validation
 
 The setup follows the [official Next.js installation guide](https://nextjs.org/docs/app/getting-started/installation) and [shadcn/ui Next.js guide](https://ui.shadcn.com/docs/installation/next).
 
@@ -46,6 +47,7 @@ The setup follows the [official Next.js installation guide](https://nextjs.org/d
 
 ```text
 src/app/(public)/         Original welcome page and public layout
+src/app/(entry)/          Account entry previews and guided Quick Setup
 src/app/w/[workspaceId]/  Shared workspace layout and small route files
 src/components/ui/        Editable shadcn/ui primitives
 src/components/layout/    Workspace shell, header, sidebar, and page patterns
@@ -53,6 +55,8 @@ src/components/navigation/ Pathname-aware navigation and breadcrumbs
 src/components/shared/    Buttons, cards, fields, type, amounts, badges, avatars
 src/components/feedback/  Placeholders, empty/loading states, confirmation dialog
 src/features/workspaces/  Workspace switcher, home, More, interface preview
+src/features/account/     Demo-only account forms and branded entry layout
+src/features/onboarding/  Wizard, conditional details, templates, tab draft store
 src/config/               Typed navigation, role presentation, features, icons
 src/data/                 Fictional users and workspaces
 src/types/                Workspace-scoped roles and fixture types
@@ -92,7 +96,17 @@ Review generated changes and retain the Risiti tokens and mobile touch targets.
 
 This is a manifest foundation, not a complete offline PWA: there is no service worker, offline cache, push notification support, or custom install prompt. Production PWA capabilities require HTTPS (localhost is allowed for local testing).
 
-The welcome page and workspace UI foundation are implemented. Business feature destinations are explicitly labelled planned placeholders. The interface preview uses only local component state. Authentication, functional dashboards, receipt issuance, designers, backend services, Supabase, payments, and AI features remain out of scope.
+The welcome page, workspace UI foundation, account entry previews, and guided Quick Setup are implemented. Business feature destinations are explicitly labelled planned placeholders. Real authentication, functional dashboards, receipt issuance, designers, backend services, Supabase, payments, and AI features remain out of scope.
+
+## Step 3 account entry and Quick Setup
+
+Use Get Started on the welcome page or open `/onboarding`. Account form previews are at `/sign-in`, `/create-account`, `/verify`, and `/forgot-password`. Explore Demo always enters the existing demo workspace without an account.
+
+The shared wizard supports Business / Institution and Personal Use, conditional details, three intended-use choices, nine optional receipt designs, editable review, and explicit demo success. Expense-only setup skips receipt designs. Any category can use any design, start blank, or customise later.
+
+Only the fictional workspace name and non-sensitive setup choices are retained in a versioned sessionStorage draft for this tab. Optional contact details and logo previews are in memory only and clear on refresh/leaving. Passwords and verification codes are never stored or sent. Start Over clears the draft. Completion reuses `/w/setup/home`, showing the chosen name and recommended shortcuts through the existing workspace shell. Refreshing does not generate additional workspaces or receipts.
+
+Use made-up details. No account, online workspace, authentication session, or receipt is created. See [Onboarding flow](docs/ONBOARDING_FLOW.md) for exact routes, validation, template definitions, storage boundaries, demo behavior, and future integration points.
 
 ## Step 2 workspace
 
@@ -132,6 +146,8 @@ $env:NODE_OPTIONS = "--use-system-ca"
 Keep certificate verification enabled.
 
 ## Initial validation
+
+Step 3 passed installation, ESLint with zero warnings, strict TypeScript checks, production build, and all 41 regression tests (the original 18 plus 23 account/setup checks). Browser checks covered 320, 360, 375, 390, 428, 768, 1024, and 1440px, plus short keyboard-like viewports. They verify business/personal setup, optional/custom fields, local logo validation, template/scratch/deferral choices, review/edit, refresh restoration, Start Over, duplicate completion, storage unavailability, credential handling, and existing public/workspace navigation. A corrected optional-details panel and explicit Next.js Activity cleanup preserve step progress while clearing memory-only information after leaving a route. Production audit still reports zero vulnerabilities; the existing 13 development-tooling advisories remain. Physical Android/keyboard testing has not been performed.
 
 Step 2 passed installation, ESLint with zero warnings, strict TypeScript checks, production build, and all 18 browser/foundation regression tests. The suite covers all eight requested widths. Visual review caught and fixed semantic typography being dropped by class merging and a narrow navigation-label fit issue at 320px. Functional text/surface colour pairs were also checked against a 4.5:1 contrast target.
 

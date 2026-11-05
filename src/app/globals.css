@@ -399,3 +399,37 @@
 .workspace-shell header {
   padding-top: env(safe-area-inset-top, 0px);
 }
+
+/* Account entry and setup remain outside the workspace navigation. */
+.entry-shell {
+  padding-bottom: calc(1.5rem + env(safe-area-inset-bottom, 0px));
+}
+.entry-shell header {
+  padding-top: env(safe-area-inset-top, 0px);
+}
+.entry-shell header :focus-visible {
+  outline-color: var(--ring);
+}
+.entry-shell #entry-main {
+  padding-bottom: calc(1rem + env(safe-area-inset-bottom, 0px));
+}
+.entry-actions {
+  bottom: calc(0.5rem + env(safe-area-inset-bottom, 0px));
+}
+.entry-shell input,
+.entry-shell select,
+.entry-shell textarea {
+  scroll-margin-block: 6rem 12rem;
+}
+.entry-shell [type="radio"]:focus-visible {
+  outline: none;
+}
+@media (max-width: 359px) {
+  .entry-actions {
+    gap: 0.5rem;
+    padding: 0.75rem;
+  }
+  .entry-actions > button {
+    padding-inline: 0.875rem;
+  }
+}

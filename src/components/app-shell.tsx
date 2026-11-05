@@ -37,10 +37,10 @@ export function AppShell({ children }: { children: React.ReactNode }) {
             </a>
           </nav>
           <Link
-            href="/w/demo/home"
+            href="/onboarding"
             className="hidden min-h-11 items-center gap-2 rounded-full bg-lime px-5 text-sm font-semibold text-ink transition-colors hover:bg-lime/90 md:inline-flex"
           >
-            Explore demo <ArrowUpRight aria-hidden="true" className="size-4" />
+            Get Started <ArrowUpRight aria-hidden="true" className="size-4" />
           </Link>
         </div>
       </header>

@@ -16,6 +16,7 @@ export type Workspace = {
   currency: "UGX";
   role: Role;
   isDemo: true;
+  kind?: "business" | "personal";
 };
 export type DemoUser = {
   id: string;

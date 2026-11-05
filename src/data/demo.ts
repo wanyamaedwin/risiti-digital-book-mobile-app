@@ -29,5 +29,17 @@ export const availableWorkspaces: readonly Workspace[] = [
 ];
 
 export function getWorkspace(id: string): Workspace | undefined {
+  if (id === "setup") return setupWorkspace;
   return availableWorkspaces.find((workspace) => workspace.id === id);
 }
+
+/** Stable demo destination; identity is overlaid from this tab after setup. */
+export const setupWorkspace: Workspace = {
+  id: "setup",
+  name: "My demo workspace",
+  initials: "MD",
+  branch: "Demo setup",
+  currency: "UGX",
+  role: "business_owner",
+  isDemo: true,
+};

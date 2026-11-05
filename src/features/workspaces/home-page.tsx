@@ -1,4 +1,5 @@
 import Link from "next/link";
+import type { ReactNode } from "react";
 import { ArrowUpRight, ArrowRight, Sprout } from "lucide-react";
 import {
   PageContainer,
@@ -15,9 +16,11 @@ import { roleLabels, type DemoUser, type Workspace } from "@/types/workspace";
 export function WorkspaceHomePage({
   workspace,
   user,
+  recommendations,
 }: {
   workspace: Workspace;
   user: DemoUser;
+  recommendations?: ReactNode;
 }) {
   return (
     <PageContainer>
@@ -27,11 +30,14 @@ export function WorkspaceHomePage({
         description="A little clarity for your everyday. Let's start with a fresh page."
         action={<StatusBadge tone="planned">Demo workspace</StatusBadge>}
       />
+      {recommendations}
       <div className="grid gap-4 xl:grid-cols-[minmax(0,1.65fr)_minmax(0,1fr)]">
         <AppCard className="relative overflow-hidden border-0 bg-primary p-6 text-white sm:p-8">
           <div className="relative z-10 max-w-lg">
             <p className="mb-5 text-metadata font-medium tracking-[0.12em] text-white/80 uppercase">
-              Your business. Your next chapter.
+              {workspace.kind === "personal"
+                ? "Your space. Your next chapter."
+                : "Your business. Your next chapter."}
             </p>
             <h2 className="text-app-display">
               Small beginnings.
@@ -40,7 +46,11 @@ export function WorkspaceHomePage({
             </h2>
             <p className="mt-5 max-w-sm text-app-body text-white/85">
               Explore your new Risiti workspace. This demo is a first look at
-              the spaces we&apos;re building for your business.
+              the spaces we&apos;re building for{" "}
+              {workspace.kind === "personal"
+                ? "your everyday"
+                : "your business"}
+              .
             </p>
             <Button
               asChild
@@ -69,7 +79,9 @@ export function WorkspaceHomePage({
           </div>
           <dl className="space-y-4 text-sm">
             <div className="flex flex-wrap justify-between gap-2">
-              <dt className="text-muted-foreground">Business</dt>
+              <dt className="text-muted-foreground">
+                {workspace.kind === "personal" ? "Workspace" : "Business"}
+              </dt>
               <dd className="font-medium">{workspace.name}</dd>
             </div>
             <div className="flex flex-wrap justify-between gap-2">
@@ -86,7 +98,9 @@ export function WorkspaceHomePage({
             </div>
           </dl>
           <p className="border-t border-border pt-4 text-caption text-muted-foreground">
-            Fictional business · Sample account
+            {workspace.kind === "personal"
+              ? "Personal demo · Sample account"
+              : "Fictional business · Sample account"}
             <br />
             No live records or connected services.
           </p>

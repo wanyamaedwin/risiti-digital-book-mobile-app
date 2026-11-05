@@ -15,7 +15,7 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 - Read the relevant installed Next.js guides before changes. Follow App Router conventions and current deprecation notices.
 - Keep TypeScript strict. Prefer explicit types, avoid `any`, and do not bypass build or lint errors.
 - Prefer Server Components. Add `"use client"` only where browser state or interactivity needs it.
-- Step 2 is frontend-only: design system, demo workspace shell, typed navigation, and explicitly planned feature placeholders. Do not add authentication, functional dashboards, receipt issuance, backend services, Supabase, payments, AI, or business management without a new user request.
+- Step 3 is frontend-only: existing design system/shell, sample account entry, guided setup, and planned feature placeholders. Do not add real authentication, functional dashboards, receipt issuance, backend services, Supabase, payments, AI, or business management without a new user request.
 - Use Tailwind CSS v4's CSS-first tokens in `src/app/globals.css`; there is no legacy Tailwind configuration file. Keep the PostCSS integration in `postcss.config.mjs`.
 - Preserve all five official Risiti colours. Use semantic tokens for components; pair lime with Deep Ink for readable text.
 - Use Geist for interface text and headings. Introduce Satoshi only when its font files and a suitable licence are supplied and verified.
@@ -37,3 +37,11 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 - Keep `usePathname` consumers inside Suspense boundaries for unknown dynamic params with Cache Components; generate known demo route params at build time.
 - For workspace or component changes, run `npm run test:e2e` after a production build. Test files live in `tests/`; browser installation instructions are in README.md. Inspect all eight documented viewport widths and preserve keyboard focus behavior.
 - Do not use `npm audit fix --force`, weaken certificate validation, change Git remotes, or push code unless the user explicitly authorizes those actions for the current task.
+- Keep account entry and Quick Setup in `src/app/(entry)/`, outside both workspace navigation and the public landing layout. Use lime with Deep Ink for their primary actions; preserve existing brand tokens and shells.
+- Use Zod and React Hook Form for account/detail validation. Account entry and verification are clearly labelled previews; never claim an account was created, a code was sent, or a user was authenticated.
+- Keep password, OTP, phone, email, address, and logo data out of onboarding storage. Credentials stay only in form memory. Only allowlisted fictional display/setup configuration may enter the versioned `risiti:onboarding:v1` sessionStorage key.
+- Keep one shared conditional wizard and typed states in `src/types/onboarding.ts`. Expense-only setup skips the book step. Preserve Back/Continue, validated restoration, Start Over, and idempotent completion. Never create records in a completion effect.
+- Reuse `src/data/receipt-templates.ts` and `src/types/receipt-template.ts`. Categories suggest but never restrict template selection. Keep financial system fields distinguishable from configurable display fields. Do not implement the full designer or issue receipts here.
+- `/w/setup` adapts this tab's completed draft into the existing shell. Keep fixture demos intact, preserve role-scoped presentation, and do not infer permissions or login from a completed draft.
+- Run the original 18 regression tests and the additional account/onboarding tests after a build. Test the documented eight viewport widths, short viewports, keyboard interactions, storage exclusions, restoration, reset, and both workspace journeys. See `docs/ONBOARDING_FLOW.md`.
+- Cache Components retains hidden pages with React Activity. Keep explicit layout-effect cleanup for account credentials and wizard contacts/logo; changing wizard steps must retain those optional details, while leaving the route must clear them. Read the installed `preserving-ui-state.md` guide before changing this behavior.

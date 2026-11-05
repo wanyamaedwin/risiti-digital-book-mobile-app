@@ -2,7 +2,7 @@
 
 ## Scope and rendering
 
-Step 2 is a frontend foundation: a demo shell, design system, typed navigation, and explicit future-feature pages. There is no authentication, authorization enforcement, backend integration, persistence, receipt issuance, payment processing, scanning, PDF generation, or service worker.
+Step 3 extends the frontend foundation with demo account forms and guided setup. There is no real authentication, authorization enforcement, backend integration, server persistence, receipt issuance, payment processing, scanning, PDF generation, or service worker. A versioned tab-scoped setup draft stores only non-sensitive fictional configuration.
 
 The root layout owns Geist, global CSS, viewport, and basic metadata. `app/(public)/layout.tsx` uses the original public AppShell, preserving the welcome page outside the workspace shell. `app/w/[workspaceId]/layout.tsx` resolves a fictional workspace and composes the new workspace AppShell. Both share the root layout, so the original manifest and icons remain global.
 
@@ -37,7 +37,7 @@ Cashier navigation contains exactly Home, New Receipt, and My History. It does n
 
 ## Mock data and workspace switching
 
-`data/demo.ts` contains a fictional user with an `example.com` email, Kampala Traders (`demo`, Main Branch, Business Owner, UGX), and Wakiso Supplies (`sample`, Wakiso Branch, Business Owner, UGX). Both are marked demo. The switcher links to each workspace's Home; identity comes from route-resolved fixture props. No global store, cookies, localStorage, remote service, or persistence is used.
+`data/demo.ts` contains a fictional user with an `example.com` email, Kampala Traders (`demo`, Main Branch, Business Owner, UGX), and Wakiso Supplies (`sample`, Wakiso Branch, Business Owner, UGX). Both are marked demo. The switcher links to each workspace's Home; identity comes from route-resolved fixture props. These original fixtures do not use cookies, localStorage, a remote service, or persistence. The separate setup adapter described below overlays tab-scoped configuration only for `/w/setup`.
 
 The Home page contains no fake sales totals or transaction feed. Only the interface preview shows a labelled sample UGX amount to exercise CurrencyAmount and StatCard. Search and filters operate on sample component descriptions, not fake business records. Form validation, switches, reset confirmation, and result messages affect only local React state. Values reset on leaving/reloading the page.
 
@@ -59,6 +59,16 @@ tests/                    Browser interactions and foundation regression checks
 
 The existing `components/app-shell.tsx` remains the public shell; `components/layout/app-shell.tsx` is the workspace shell. Their names express the same broad pattern but they do not render together. Public links and metadata are preserved.
 
+## Account entry and setup
+
+The `(entry)` route group contains `/sign-in`, `/create-account`, `/forgot-password`, `/verify`, and `/onboarding`, with its own lightweight branded layout and no workspace navigation. Account forms use Zod and React Hook Form and never submit credentials or create a session. The existing welcome page supplies Get Started and sign-in entry points alongside its demo link.
+
+`features/onboarding/` owns the shared conditional wizard, details form, choices, template previews, review, and a small `useSyncExternalStore` draft store. The strict versioned sessionStorage envelope keeps the fictional workspace name, choices, step, and completion flag. Optional contacts and local logo object URLs remain in wizard memory. No global state dependency is added.
+
+`/w/setup` is an additional known demo destination. Its client adapter supplies validated completed draft identity to the existing AppShell and reuses the Home, More, and interface-preview compositions. The existing fixture routes keep their Server Component shell composition. Recommended shortcuts are a small addition to Home, based on primary use, and link only to existing feature placeholders. A stable route and one saved object avoid duplicate workspaces on refresh or repeated completion.
+
+Typed template fixtures distinguish reserved financial system fields from configurable display fields and support all five requested field types. They provide a future designer starting point without implementing editing, numbering, issuance, calculations, or persistence. See [Onboarding flow](ONBOARDING_FLOW.md) for the complete routes, validation, transition, storage, privacy, and integration contracts.
+
 ## Validation
 
 Run `npm install`, `npm run lint`, `npm run typecheck`, `npm run build`, then `npm run test:e2e`. The Playwright suite serves the production build on port 3210 with one worker and optional tracing. Full Chromium is installed separately with `npx playwright install chromium --no-shell`; no production dependency is added for browser tooling. README.md documents the temporary-storage workaround used on this Windows machine.
@@ -69,6 +79,6 @@ This does not replace manual accessibility review, physical Android testing, or 
 
 ## Future integration boundaries
 
-Step 3 requires a separately agreed scope. Future work may replace fixture resolution with authenticated workspace membership, introduce scoped data repositories and permission checks, and connect real feature pages. Keep navigation URLs workspace-scoped, business state outside generic UI primitives, amounts validated before persistence, and errors distinguishable from empty results. Do not add these services during Step 2.
+Step 4 and later stages require a separately agreed scope. Future work may replace fixture resolution and account previews with authenticated workspace membership, introduce scoped data repositories and permission checks, and connect real feature pages. Keep navigation URLs workspace-scoped, business state outside generic UI primitives, amounts validated before persistence, and errors distinguishable from empty results. Do not add these services during Step 3.
 
 The manifest remains a PWA metadata foundation. Offline caches, service-worker update/lifecycle handling, real installation flows, EFRIS, and subscriptions require separate implementation and validation. No financial operation is currently possible.
